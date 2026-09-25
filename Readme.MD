@@ -30,9 +30,9 @@ The Eid and Ramadan dates use the browser's Umm al-Qura calendar calculation. Lo
 
 ## Public Links
 
-- [GitHub repository](https://github.com/ms12871/git-demo)
-- [Welcome landing page](https://ms12871.github.io/git-demo/)
-- [Leap-year checker](https://ms12871.github.io/git-demo/checker.html)
+- [GitHub repository](https://github.com/ms12871/Calendar)
+- [Welcome landing page](https://ms12871.github.io/Calendar/)
+- [Leap-year checker](https://ms12871.github.io/Calendar/checker.html)
 
 ## US Federal Holidays
 
