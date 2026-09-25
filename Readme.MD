@@ -13,6 +13,7 @@ The project includes a welcome landing page and an interactive checker that tell
 - Previous and next leap year details
 - Eid al-Fitr and Eid al-Adha dates for nearby past and future years
 - Ramadan start, end, and duration for the entered year
+- US federal holiday dates for the entered year
 - Full 12-month year calendar with Ramadan and Eid highlights
 - Clear button to reset the checker
 - Python version of the leap-year checker
@@ -26,6 +27,24 @@ The project includes a welcome landing page and an interactive checker that tell
 You can also open `index.html` directly to use the checker.
 
 The Eid and Ramadan dates use the browser's Umm al-Qura calendar calculation. Local moon-sighting announcements may differ by one day.
+
+## US Federal Holidays
+
+The checker displays these nationwide US federal holidays for the entered year:
+
+- New Year's Day
+- Martin Luther King Jr. Day
+- Washington's Birthday
+- Memorial Day
+- Juneteenth National Independence Day
+- Independence Day
+- Labor Day
+- Columbus Day
+- Veterans Day
+- Thanksgiving Day
+- Christmas Day
+
+State and local public holidays may be different. Observed days can also change when a holiday falls on a weekend.
 
 ## Run the Python Version
 
