@@ -20,11 +20,11 @@ The project includes a welcome landing page and an interactive checker that tell
 
 ## Run in the Browser
 
-1. Open `welcome.html` in a web browser.
+1. Open `index.html` in a web browser.
 2. Select **Try the leap-year checker**.
 3. Enter a year, then select **Check year**.
 
-You can also open `index.html` directly to use the checker.
+You can also open `checker.html` directly to use the checker.
 
 The Eid and Ramadan dates use the browser's Umm al-Qura calendar calculation. Local moon-sighting announcements may differ by one day.
 
@@ -60,8 +60,8 @@ Enter a year when prompted.
 
 | File | Description |
 | --- | --- |
-| `welcome.html` | Welcome landing page for the project |
-| `index.html` | Browser-based leap-year checker |
+| `index.html` | Welcome landing page for the project |
+| `checker.html` | Browser-based leap-year checker |
 | `test.py` | Python leap-year checker |
 
 ## Leap-Year Rule
