@@ -28,6 +28,12 @@ You can also open `checker.html` directly to use the checker.
 
 The Eid and Ramadan dates use the browser's Umm al-Qura calendar calculation. Local moon-sighting announcements may differ by one day.
 
+## Public Links
+
+- [GitHub repository](https://github.com/ms12871/git-demo)
+- [Welcome landing page](https://ms12871.github.io/git-demo/)
+- [Leap-year checker](https://ms12871.github.io/git-demo/checker.html)
+
 ## US Federal Holidays
 
 The checker displays these nationwide US federal holidays for the entered year:
@@ -60,9 +66,9 @@ Enter a year when prompted.
 
 | File | Description |
 | --- | --- |
-| `index.html` | Welcome landing page for the project |
-| `checker.html` | Browser-based leap-year checker |
-| `test.py` | Python leap-year checker |
+| [`index.html`](index.html) | Welcome landing page for the project |
+| [`checker.html`](checker.html) | Browser-based leap-year checker |
+| [`test.py`](test.py) | Python leap-year checker |
 
 ## Leap-Year Rule
 

@@ -21,7 +21,7 @@ html {
 body {
 	margin: 0;
 	color: var(--cream);
-	background: var(--night);
+	background: #052e49;
 	font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -30,8 +30,12 @@ body {
 	min-height: 100vh;
 	overflow: hidden;
 	background:
-		radial-gradient(circle at 85% 20%, rgba(255, 209, 102, 0.18), transparent 25%),
+		radial-gradient(circle at 12% 8%, rgba(106, 218, 255, 0.2), transparent 26%),
+		radial-gradient(circle at 88% 18%, rgba(255, 209, 102, 0.2), transparent 24%),
+		linear-gradient(rgba(199, 237, 255, 0.035) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(199, 237, 255, 0.035) 1px, transparent 1px),
 		linear-gradient(135deg, var(--night) 0%, var(--night-soft) 100%);
+	background-size: auto, auto, 42px 42px, 42px 42px, auto;
 }
 
 .page::before,
@@ -74,6 +78,7 @@ header {
 	justify-content: space-between;
 	padding: 28px 0;
 	border-bottom: 1px solid var(--line);
+	background: linear-gradient(90deg, transparent, rgba(199, 237, 255, 0.05), transparent);
 	animation: fade-in 700ms ease both;
 }
 
@@ -127,6 +132,16 @@ nav a:hover::after {
 	align-items: center;
 	min-height: 620px;
 	padding: 72px 0 96px;
+}
+
+.hero::after {
+	position: absolute;
+	right: 15%;
+	bottom: 34px;
+	left: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(199, 237, 255, 0.28), transparent);
+	content: "";
 }
 
 .hero > div:first-child {
@@ -195,7 +210,7 @@ nav a:focus-visible {
 	padding: 28px;
 	color: var(--night);
 	background: var(--cream);
-	box-shadow: 18px 18px 0 var(--coral), 30px 30px 32px var(--shadow);
+	box-shadow: 18px 18px 0 var(--coral), 0 0 44px rgba(106, 218, 255, 0.2), 30px 30px 32px var(--shadow);
 	transform: rotate(3deg);
 	animation: float-in 900ms 220ms ease both, hover-calendar 6s 1.2s ease-in-out infinite;
 }
@@ -253,12 +268,14 @@ nav a:focus-visible {
 .detail {
 	min-height: 190px;
 	padding: 28px;
-	background: rgba(23, 43, 53, 0.72);
+	border-top: 2px solid rgba(199, 237, 255, 0.12);
+	background: rgba(3, 57, 88, 0.74);
 	transition: background 180ms ease, transform 180ms ease;
 }
 
 .detail:hover {
-	background: rgba(40, 67, 74, 0.95);
+	border-top-color: var(--yellow);
+	background: rgba(8, 126, 170, 0.78);
 	transform: translateY(-5px);
 }
 

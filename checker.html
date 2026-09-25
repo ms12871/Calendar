@@ -219,6 +219,53 @@
 			font-weight: 700;
 		}
 
+		.holiday-section {
+			margin-top: 28px;
+			padding-top: 24px;
+			border-top: 1px solid var(--line);
+		}
+
+		.holiday-section h2 {
+			margin: 0 0 6px;
+			font-size: 1.35rem;
+			font-weight: 400;
+		}
+
+		.holiday-note {
+			margin: 0 0 14px;
+			color: var(--muted);
+			font: 0.78rem/1.45 Arial, sans-serif;
+		}
+
+		.holiday-table {
+			width: 100%;
+			border-collapse: collapse;
+			font: 0.82rem/1.4 Arial, sans-serif;
+		}
+
+		.holiday-table th,
+		.holiday-table td {
+			padding: 9px 4px;
+			border-bottom: 1px solid var(--line);
+			text-align: left;
+		}
+
+		.holiday-table th {
+			color: var(--muted);
+			font-size: 0.7rem;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+		}
+
+		.holiday-table td:first-child {
+			font-weight: 700;
+		}
+
+		.holiday-table tr.current-year {
+			color: var(--green-dark);
+			background: #eef5ef;
+		}
+
 		.calendar-section {
 			margin-top: 28px;
 			padding-top: 24px;
@@ -274,6 +321,10 @@
 
 		.legend-item.adha::before {
 			background: var(--green);
+		}
+
+		.legend-item.holiday::before {
+			background: #5b77a8;
 		}
 
 		.calendar-grid {
@@ -337,6 +388,12 @@
 		.day.eid-adha {
 			color: white;
 			background: var(--green);
+			font-weight: 700;
+		}
+
+		.day.us-holiday {
+			color: white;
+			background: #5b77a8;
 			font-weight: 700;
 		}
 
@@ -415,6 +472,17 @@
 			</table>
 		</section>
 
+		<section class="holiday-section" id="holiday-section" hidden aria-labelledby="holiday-title">
+			<h2 id="holiday-title">US federal holidays for <span id="holiday-year"></span></h2>
+			<p class="holiday-note">Includes nationwide federal holidays for the selected year. State and local public holidays may be different.</p>
+			<table class="holiday-table">
+				<thead>
+					<tr><th>Holiday</th><th>Date</th></tr>
+				</thead>
+				<tbody id="holiday-dates"></tbody>
+			</table>
+		</section>
+
 		<section class="calendar-section" id="calendar-section" hidden aria-labelledby="calendar-title">
 			<div class="calendar-heading">
 				<h2 id="calendar-title">Year calendar</h2>
@@ -424,6 +492,7 @@
 				<span class="legend-item ramadan">Ramadan</span>
 				<span class="legend-item fitr">Eid al-Fitr</span>
 				<span class="legend-item adha">Eid al-Adha</span>
+				<span class="legend-item holiday">US federal holiday</span>
 			</div>
 			<div class="calendar-grid" id="calendar-grid"></div>
 		</section>
@@ -438,6 +507,9 @@
 		const eidDates = document.querySelector("#eid-dates");
 		const ramadanSection = document.querySelector("#ramadan-section");
 		const ramadanDates = document.querySelector("#ramadan-dates");
+		const holidaySection = document.querySelector("#holiday-section");
+		const holidayDates = document.querySelector("#holiday-dates");
+		const holidayYear = document.querySelector("#holiday-year");
 		const calendarSection = document.querySelector("#calendar-section");
 		const calendarYear = document.querySelector("#calendar-year");
 		const calendarGrid = document.querySelector("#calendar-grid");
@@ -470,6 +542,32 @@
 			while (!isLeapYear(candidate)) candidate += 1;
 			return candidate;
 		};
+
+		const nthWeekday = (year, month, weekday, occurrence) => {
+			const date = new Date(Date.UTC(year, month, 1));
+			date.setUTCDate(1 + (weekday - date.getUTCDay() + 7) % 7 + (occurrence - 1) * 7);
+			return date;
+		};
+
+		const lastWeekday = (year, month, weekday) => {
+			const date = new Date(Date.UTC(year, month + 1, 0));
+			date.setUTCDate(date.getUTCDate() - (date.getUTCDay() - weekday + 7) % 7);
+			return date;
+		};
+
+		const getUSHolidays = (year) => [
+			{ name: "New Year's Day", date: new Date(Date.UTC(year, 0, 1)) },
+			{ name: "Martin Luther King Jr. Day", date: nthWeekday(year, 0, 1, 3) },
+			{ name: "Washington's Birthday", date: nthWeekday(year, 1, 1, 3) },
+			{ name: "Memorial Day", date: lastWeekday(year, 4, 1) },
+			{ name: "Juneteenth National Independence Day", date: new Date(Date.UTC(year, 5, 19)) },
+			{ name: "Independence Day", date: new Date(Date.UTC(year, 6, 4)) },
+			{ name: "Labor Day", date: nthWeekday(year, 8, 1, 1) },
+			{ name: "Columbus Day", date: nthWeekday(year, 9, 1, 2) },
+			{ name: "Veterans Day", date: new Date(Date.UTC(year, 10, 11)) },
+			{ name: "Thanksgiving Day", date: nthWeekday(year, 10, 4, 4) },
+			{ name: "Christmas Day", date: new Date(Date.UTC(year, 11, 25)) }
+		];
 
 		const getEidDates = (year) => {
 			const dates = {};
@@ -548,10 +646,22 @@
 			ramadanSection.hidden = false;
 		};
 
+		const showUSHolidays = (year) => {
+			holidayYear.textContent = year;
+			holidayDates.innerHTML = getUSHolidays(year).map((holiday) => `
+				<tr class="current-year">
+					<td>${holiday.name}</td>
+					<td>${dateFormatter.format(holiday.date)}</td>
+				</tr>
+			`).join("");
+			holidaySection.hidden = false;
+		};
+
 		const dateKey = (date) => date.toISOString().slice(0, 10);
 
 		const showYearCalendar = (year) => {
 			const eidDatesForYear = getEidDates(year);
+			const holidayMap = new Map(getUSHolidays(year).map((holiday) => [dateKey(holiday.date), holiday.name]));
 			const eidMap = new Map([
 				[dateKey(eidDatesForYear.fitr), "eid-fitr"],
 				[dateKey(eidDatesForYear.adha), "eid-adha"]
@@ -577,8 +687,9 @@
 				for (let dayNumber = 1; dayNumber <= daysInMonth; dayNumber += 1) {
 					const date = new Date(Date.UTC(year, monthIndex, dayNumber));
 					const key = dateKey(date);
-					const eventClass = eidMap.get(key) || (ramadanDays.has(key) ? "ramadan" : "");
-					const eventName = eventClass === "eid-fitr" ? "Eid al-Fitr" : eventClass === "eid-adha" ? "Eid al-Adha" : eventClass === "ramadan" ? "Ramadan" : "";
+					const holidayName = holidayMap.get(key);
+					const eventClass = holidayName ? "us-holiday" : eidMap.get(key) || (ramadanDays.has(key) ? "ramadan" : "");
+					const eventName = holidayName || (eventClass === "eid-fitr" ? "Eid al-Fitr" : eventClass === "eid-adha" ? "Eid al-Adha" : eventClass === "ramadan" ? "Ramadan" : "");
 					cells.push(`<span class="day ${eventClass}"${eventName ? ` title="${eventName}"` : ""}${eventName ? ` aria-label="${monthName} ${dayNumber}, ${year}: ${eventName}"` : ""}>${dayNumber}</span>`);
 				}
 
@@ -612,6 +723,7 @@
 			`;
 			showEidDates(year);
 			showRamadanDates(year);
+			showUSHolidays(year);
 			showYearCalendar(year);
 		});
 
@@ -623,6 +735,8 @@
 			eidDates.innerHTML = "";
 			ramadanSection.hidden = true;
 			ramadanDates.innerHTML = "";
+			holidaySection.hidden = true;
+			holidayDates.innerHTML = "";
 			calendarSection.hidden = true;
 			calendarGrid.innerHTML = "";
 			yearInput.focus();
