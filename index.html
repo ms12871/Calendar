@@ -125,6 +125,17 @@
 			border-left-color: var(--coral);
 		}
 
+		.result-title {
+			margin: 0 0 8px;
+			font-size: 1.25rem;
+		}
+
+		.result-details {
+			margin: 0;
+			color: var(--muted);
+			font-size: 0.9rem;
+		}
+
 		@media (max-width: 430px) {
 			main {
 				box-shadow: 7px 7px 0 var(--green);
@@ -151,7 +162,9 @@
 			<button class="secondary" id="clear-button" type="button">Clear</button>
 		</form>
 
-		<div class="result" id="result" aria-live="polite">Your answer will appear here.</div>
+		<div class="result" id="result" aria-live="polite">
+			<p class="result-title">Your answer will appear here.</p>
+		</div>
 	</main>
 
 	<script>
@@ -159,6 +172,21 @@
 		const yearInput = document.querySelector("#year");
 		const result = document.querySelector("#result");
 		const clearButton = document.querySelector("#clear-button");
+
+		const isLeapYear = (year) => year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
+
+		const findPreviousLeapYear = (year) => {
+			for (let candidate = year - 1; candidate >= 1; candidate -= 1) {
+				if (isLeapYear(candidate)) return candidate;
+			}
+			return null;
+		};
+
+		const findNextLeapYear = (year) => {
+			let candidate = year + 1;
+			while (!isLeapYear(candidate)) candidate += 1;
+			return candidate;
+		};
 
 		form.addEventListener("submit", (event) => {
 			event.preventDefault();
@@ -170,17 +198,25 @@
 				return;
 			}
 
-			const isLeapYear = year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0);
-			result.className = `result ${isLeapYear ? "success" : "error"}`;
-			result.textContent = isLeapYear
-				? `${year} is a leap year.`
-				: `${year} is not a leap year.`;
+			const leapYear = isLeapYear(year);
+			const previousLeapYear = findPreviousLeapYear(year);
+			const nextLeapYear = findNextLeapYear(year);
+			const februaryDays = leapYear ? 29 : 28;
+			const previousText = previousLeapYear
+				? `Previous leap year: ${previousLeapYear}`
+				: "No previous positive leap year";
+
+			result.className = `result ${leapYear ? "success" : "error"}`;
+			result.innerHTML = `
+				<p class="result-title">${year} is ${leapYear ? "a" : "not a"} leap year.</p>
+				<p class="result-details">February has ${februaryDays} days.<br>${previousText}<br>Next leap year: ${nextLeapYear}</p>
+			`;
 		});
 
 		clearButton.addEventListener("click", () => {
 			yearInput.value = "";
 			result.className = "result";
-			result.textContent = "Your answer will appear here.";
+			result.innerHTML = '<p class="result-title">Your answer will appear here.</p>';
 			yearInput.focus();
 		});
 	</script>

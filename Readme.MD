@@ -9,6 +9,8 @@ The project includes a welcome landing page and an interactive checker that tell
 - Responsive welcome page
 - Interactive year input
 - Leap-year result for any positive whole year
+- February day count
+- Previous and next leap year details
 - Clear button to reset the checker
 - Python version of the leap-year checker
 
