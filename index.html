@@ -32,7 +32,7 @@
 		}
 
 		main {
-			width: min(100%, 560px);
+			width: min(100%, 1040px);
 			padding: clamp(28px, 7vw, 56px);
 			border: 1px solid var(--line);
 			background: var(--panel);
@@ -183,6 +183,168 @@
 			background: #eef5ef;
 		}
 
+		.ramadan-section {
+			margin-top: 28px;
+			padding-top: 24px;
+			border-top: 1px solid var(--line);
+		}
+
+		.ramadan-section h2 {
+			margin: 0 0 6px;
+			font-size: 1.35rem;
+			font-weight: 400;
+		}
+
+		.ramadan-table {
+			width: 100%;
+			border-collapse: collapse;
+			font: 0.82rem/1.4 Arial, sans-serif;
+		}
+
+		.ramadan-table th,
+		.ramadan-table td {
+			padding: 9px 4px;
+			border-bottom: 1px solid var(--line);
+			text-align: left;
+		}
+
+		.ramadan-table th {
+			color: var(--muted);
+			font-size: 0.7rem;
+			letter-spacing: 0.05em;
+			text-transform: uppercase;
+		}
+
+		.ramadan-table td:first-child {
+			font-weight: 700;
+		}
+
+		.calendar-section {
+			margin-top: 28px;
+			padding-top: 24px;
+			border-top: 1px solid var(--line);
+		}
+
+		.calendar-heading {
+			display: flex;
+			align-items: baseline;
+			justify-content: space-between;
+			gap: 16px;
+		}
+
+		.calendar-heading h2 {
+			margin: 0 0 6px;
+			font-size: 1.35rem;
+			font-weight: 400;
+		}
+
+		.calendar-heading span {
+			color: var(--muted);
+			font: 700 0.75rem Arial, sans-serif;
+			letter-spacing: 0.08em;
+			text-transform: uppercase;
+		}
+
+		.calendar-legend {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 12px;
+			margin: 6px 0 18px;
+			color: var(--muted);
+			font: 0.75rem Arial, sans-serif;
+		}
+
+		.legend-item::before {
+			display: inline-block;
+			width: 9px;
+			height: 9px;
+			margin-right: 5px;
+			border-radius: 50%;
+			background: var(--line);
+			content: "";
+		}
+
+		.legend-item.ramadan::before {
+			background: #c9e9d6;
+		}
+
+		.legend-item.fitr::before {
+			background: var(--coral);
+		}
+
+		.legend-item.adha::before {
+			background: var(--green);
+		}
+
+		.calendar-grid {
+			display: grid;
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 14px;
+		}
+
+		.month-card {
+			padding: 12px;
+			border: 1px solid var(--line);
+			background: #fbfaf5;
+		}
+
+		.month-card h3 {
+			margin: 0 0 10px;
+			font: 700 0.85rem Arial, sans-serif;
+		}
+
+		.weekdays,
+		.month-days {
+			display: grid;
+			grid-template-columns: repeat(7, 1fr);
+			gap: 3px;
+		}
+
+		.weekdays {
+			margin-bottom: 4px;
+			color: var(--muted);
+			font: 700 0.58rem Arial, sans-serif;
+			text-align: center;
+			text-transform: uppercase;
+		}
+
+		.day,
+		.empty-day {
+			min-width: 0;
+			aspect-ratio: 1;
+		}
+
+		.day {
+			display: grid;
+			place-items: center;
+			border: 0;
+			border-radius: 3px;
+			color: var(--ink);
+			background: transparent;
+			font: 0.72rem Arial, sans-serif;
+		}
+
+		.day.ramadan {
+			background: #c9e9d6;
+		}
+
+		.day.eid-fitr {
+			color: white;
+			background: var(--coral);
+			font-weight: 700;
+		}
+
+		.day.eid-adha {
+			color: white;
+			background: var(--green);
+			font-weight: 700;
+		}
+
+		.day[title]:hover {
+			outline: 2px solid var(--ink);
+			outline-offset: 1px;
+		}
+
 		@media (max-width: 430px) {
 			main {
 				box-shadow: 7px 7px 0 var(--green);
@@ -190,6 +352,24 @@
 
 			.input-row {
 				flex-direction: column;
+			}
+		}
+
+		@media (max-width: 760px) {
+			.calendar-grid {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
+		}
+
+		@media (max-width: 470px) {
+			.calendar-grid {
+				grid-template-columns: 1fr;
+			}
+
+			.calendar-heading {
+				align-items: flex-start;
+				flex-direction: column;
+				gap: 0;
 			}
 		}
 	</style>
@@ -223,6 +403,30 @@
 				<tbody id="eid-dates"></tbody>
 			</table>
 		</section>
+
+		<section class="ramadan-section" id="ramadan-section" hidden aria-labelledby="ramadan-title">
+			<h2 id="ramadan-title">Ramadan calendar</h2>
+			<p class="eid-note">Calculated Gregorian dates using the Umm al-Qura calendar. Local moon-sighting announcements may differ by one day.</p>
+			<table class="ramadan-table">
+				<thead>
+					<tr><th>Ramadan</th><th>Begins</th><th>Ends</th><th>Days</th></tr>
+				</thead>
+				<tbody id="ramadan-dates"></tbody>
+			</table>
+		</section>
+
+		<section class="calendar-section" id="calendar-section" hidden aria-labelledby="calendar-title">
+			<div class="calendar-heading">
+				<h2 id="calendar-title">Year calendar</h2>
+				<span id="calendar-year"></span>
+			</div>
+			<div class="calendar-legend" aria-label="Calendar highlights">
+				<span class="legend-item ramadan">Ramadan</span>
+				<span class="legend-item fitr">Eid al-Fitr</span>
+				<span class="legend-item adha">Eid al-Adha</span>
+			</div>
+			<div class="calendar-grid" id="calendar-grid"></div>
+		</section>
 	</main>
 
 	<script>
@@ -232,6 +436,13 @@
 		const clearButton = document.querySelector("#clear-button");
 		const eidSection = document.querySelector("#eid-section");
 		const eidDates = document.querySelector("#eid-dates");
+		const ramadanSection = document.querySelector("#ramadan-section");
+		const ramadanDates = document.querySelector("#ramadan-dates");
+		const calendarSection = document.querySelector("#calendar-section");
+		const calendarYear = document.querySelector("#calendar-year");
+		const calendarGrid = document.querySelector("#calendar-grid");
+		const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		const weekdayNames = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 		const islamicFormatter = new Intl.DateTimeFormat("en-u-ca-islamic-umalqura", {
 			day: "numeric",
 			month: "numeric",
@@ -279,6 +490,41 @@
 			return dates;
 		};
 
+		const getRamadanPeriods = (year) => {
+			const yearStart = new Date(Date.UTC(year, 0, 1));
+			const yearEnd = new Date(Date.UTC(year, 11, 31));
+			const scanDate = new Date(Date.UTC(Math.max(1, year - 1), 0, 1));
+			const periods = [];
+
+			for (let day = 0; day < 1100; day += 1) {
+				const parts = islamicFormatter.formatToParts(scanDate);
+				const month = Number(parts.find((part) => part.type === "month").value);
+				const islamicDay = Number(parts.find((part) => part.type === "day").value);
+
+				if (month === 9 && islamicDay === 1) {
+					const start = new Date(scanDate);
+					const end = new Date(scanDate);
+
+					for (let nextDay = 0; nextDay < 40; nextDay += 1) {
+						end.setUTCDate(end.getUTCDate() + 1);
+						const nextParts = islamicFormatter.formatToParts(end);
+						const nextMonth = Number(nextParts.find((part) => part.type === "month").value);
+						const nextIslamicDay = Number(nextParts.find((part) => part.type === "day").value);
+						if (nextMonth === 10 && nextIslamicDay === 1) break;
+					}
+
+					end.setUTCDate(end.getUTCDate() - 1);
+					if (start <= yearEnd && end >= yearStart) {
+						periods.push({ start, end, days: Math.round((end - start) / 86400000) + 1 });
+					}
+				}
+
+				scanDate.setUTCDate(scanDate.getUTCDate() + 1);
+			}
+
+			return periods;
+		};
+
 		const showEidDates = (year) => {
 			const years = [year - 2, year - 1, year, year + 1, year + 2].filter((value) => value > 0);
 			eidDates.innerHTML = years.map((dateYear) => {
@@ -288,6 +534,57 @@
 				return `<tr class="${dateYear === year ? "current-year" : ""}"><td>${dateYear}</td><td>${fitr}</td><td>${adha}</td></tr>`;
 			}).join("");
 			eidSection.hidden = false;
+		};
+
+		const showRamadanDates = (year) => {
+			ramadanDates.innerHTML = getRamadanPeriods(year).map((period) => `
+				<tr>
+					<td>${dateFormatter.format(period.start).slice(-4)}</td>
+					<td>${dateFormatter.format(period.start)}</td>
+					<td>${dateFormatter.format(period.end)}</td>
+					<td>${period.days}</td>
+				</tr>
+			`).join("");
+			ramadanSection.hidden = false;
+		};
+
+		const dateKey = (date) => date.toISOString().slice(0, 10);
+
+		const showYearCalendar = (year) => {
+			const eidDatesForYear = getEidDates(year);
+			const eidMap = new Map([
+				[dateKey(eidDatesForYear.fitr), "eid-fitr"],
+				[dateKey(eidDatesForYear.adha), "eid-adha"]
+			]);
+			const ramadanDays = new Set();
+
+			getRamadanPeriods(year).forEach((period) => {
+				const day = new Date(Math.max(period.start, new Date(Date.UTC(year, 0, 1))));
+				const lastDay = new Date(Math.min(period.end, new Date(Date.UTC(year, 11, 31))));
+				while (day <= lastDay) {
+					ramadanDays.add(dateKey(day));
+					day.setUTCDate(day.getUTCDate() + 1);
+				}
+			});
+
+			calendarYear.textContent = String(year);
+			calendarGrid.innerHTML = monthNames.map((monthName, monthIndex) => {
+				const firstDay = new Date(Date.UTC(year, monthIndex, 1));
+				const daysInMonth = new Date(Date.UTC(year, monthIndex + 1, 0)).getUTCDate();
+				const firstWeekday = (firstDay.getUTCDay() + 6) % 7;
+				const cells = Array.from({ length: firstWeekday }, () => '<span class="empty-day" aria-hidden="true"></span>');
+
+				for (let dayNumber = 1; dayNumber <= daysInMonth; dayNumber += 1) {
+					const date = new Date(Date.UTC(year, monthIndex, dayNumber));
+					const key = dateKey(date);
+					const eventClass = eidMap.get(key) || (ramadanDays.has(key) ? "ramadan" : "");
+					const eventName = eventClass === "eid-fitr" ? "Eid al-Fitr" : eventClass === "eid-adha" ? "Eid al-Adha" : eventClass === "ramadan" ? "Ramadan" : "";
+					cells.push(`<span class="day ${eventClass}"${eventName ? ` title="${eventName}"` : ""}${eventName ? ` aria-label="${monthName} ${dayNumber}, ${year}: ${eventName}"` : ""}>${dayNumber}</span>`);
+				}
+
+				return `<article class="month-card"><h3>${monthName}</h3><div class="weekdays">${weekdayNames.map((weekday) => `<span>${weekday}</span>`).join("")}</div><div class="month-days">${cells.join("")}</div></article>`;
+			}).join("");
+			calendarSection.hidden = false;
 		};
 
 		form.addEventListener("submit", (event) => {
@@ -314,6 +611,8 @@
 				<p class="result-details">February has ${februaryDays} days.<br>${previousText}<br>Next leap year: ${nextLeapYear}</p>
 			`;
 			showEidDates(year);
+			showRamadanDates(year);
+			showYearCalendar(year);
 		});
 
 		clearButton.addEventListener("click", () => {
@@ -322,6 +621,10 @@
 			result.innerHTML = '<p class="result-title">Your answer will appear here.</p>';
 			eidSection.hidden = true;
 			eidDates.innerHTML = "";
+			ramadanSection.hidden = true;
+			ramadanDates.innerHTML = "";
+			calendarSection.hidden = true;
+			calendarGrid.innerHTML = "";
 			yearInput.focus();
 		});
 	</script>

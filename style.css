@@ -1,13 +1,13 @@
 :root {
-	--night: #172b35;
-	--night-soft: #28434a;
-	--cream: #f8f1e5;
-	--white: #fffdf8;
-	--yellow: #f5c95d;
-	--mint: #b9d8c5;
-	--coral: #e37d60;
-	--line: rgba(248, 241, 229, 0.2);
-	--shadow: rgba(8, 22, 27, 0.24);
+	--night: #063b5c;
+	--night-soft: #087eaa;
+	--cream: #eaf7ff;
+	--white: #ffffff;
+	--yellow: #ffd166;
+	--mint: #c7edff;
+	--coral: #ff8a65;
+	--line: rgba(234, 247, 255, 0.24);
+	--shadow: rgba(3, 32, 52, 0.3);
 }
 
 * {
@@ -30,7 +30,7 @@ body {
 	min-height: 100vh;
 	overflow: hidden;
 	background:
-		radial-gradient(circle at 85% 20%, rgba(245, 201, 93, 0.16), transparent 25%),
+		radial-gradient(circle at 85% 20%, rgba(255, 209, 102, 0.18), transparent 25%),
 		linear-gradient(135deg, var(--night) 0%, var(--night-soft) 100%);
 }
 
@@ -38,7 +38,7 @@ body {
 .page::after {
 	position: absolute;
 	z-index: 0;
-	border: 1px solid rgba(185, 216, 197, 0.12);
+	border: 1px solid rgba(199, 237, 255, 0.16);
 	border-radius: 50%;
 	content: "";
 	pointer-events: none;
