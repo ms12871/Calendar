@@ -11,6 +11,7 @@ The project includes a welcome landing page and an interactive checker that tell
 - Leap-year result for any positive whole year
 - February day count
 - Previous and next leap year details
+- Eid al-Fitr and Eid al-Adha dates for nearby past and future years
 - Clear button to reset the checker
 - Python version of the leap-year checker
 
@@ -21,6 +22,8 @@ The project includes a welcome landing page and an interactive checker that tell
 3. Enter a year, then select **Check year**.
 
 You can also open `index.html` directly to use the checker.
+
+The Eid dates use the browser's Umm al-Qura calendar calculation. Local moon-sighting announcements may differ by one day.
 
 ## Run the Python Version
 
